@@ -30,13 +30,13 @@ function changeSound() {
     soundFile = args[soundIndex + 1]?.toString();
   }
 
-  console.log(chalk.gray(`🔊 Sound: ${soundFile}`));
+  console.log(chalk.gray(`Sound: ${soundFile}`));
 }
 
 function playSound() {
   const soundPath = path.join(__dirname, "assets", soundFile);
   player.play(soundPath).catch(() => {
-    console.log(chalk.red("⚠️ Failed to play sound"));
+    console.log(chalk.red("Failed to play sound"));
   });
 }
 
@@ -62,7 +62,7 @@ async function askDuration(unit: string) {
   });
 
   if (!value || value <= 0) {
-    console.log(chalk.red("❌ Enter a number greater than 0\n"));
+    console.log(chalk.red("Enter a number greater than 0\n"));
     return askDuration(unit);
   }
 
@@ -76,11 +76,11 @@ function startTimer(value: number, unit: string) {
 
   const spinner = createSpinner("Starting timer...").start();
   spinner.success({
-    text: chalk.green(`📚 Studying for ${value} ${unit}`)
+    text: chalk.green(`Studying for ${value} ${unit}`)
   });
 
   setTimeout(() => {
-    console.log(chalk.bold.green("\n⏰ Time's up! Take a break."));
+    console.log(chalk.bold.green("\nTime's up! Take a break."));
     playSound();
   }, ms);
 }
