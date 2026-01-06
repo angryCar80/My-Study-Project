@@ -1,4 +1,4 @@
-# studyproject
+# Study Project
 
 To install dependencies:
 
@@ -12,4 +12,5 @@ To run:
 bun run index.ts
 ```
 
-This project was created using `bun init` in bun v1.3.5. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+this is a simple typescript project that can help me to study and focus more.
+and am planning to add some more modes and welcoming screen
