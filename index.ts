@@ -5,6 +5,7 @@ import chalk from "chalk";
 import { Player } from "cli-sound";
 import path from "path";
 import { fileURLToPath } from "url";
+import { isPropertyAccessChain } from "typescript";
 
 // ─────────────────────────────
 // ESM dirname fix
@@ -15,14 +16,16 @@ const __dirname = path.dirname(__filename);
 // ─────────────────────────────
 // Config
 // ─────────────────────────────
-const TIME_OPTIONS = ["Seconds", "Minutes", "Hours"];
+const TIME_OPTIONS: string[] = ["Seconds", "Minutes", "Hours"];
+const MODES_OPTIONS: string[] = ["Normal", "Promodo", "Quit"];
 const args = process.argv.slice(2);
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 // ─────────────────────────────
 // Sound setup
 // ─────────────────────────────
-let soundFile:any = "default.wav";
+let soundFile: any = "default.wav";
 const player = new Player();
 
 function changeSound() {
@@ -44,6 +47,33 @@ function playSound() {
 // ─────────────────────────────
 // Timer logic
 // ─────────────────────────────
+
+async function selectOption() {
+  const { option } = await inquirer.prompt({
+    name: "option",
+    type: "list",
+    message: "Choose one of the modes",
+    choices: MODES_OPTIONS,
+  });
+  if (option == "Normal") {
+    selectTimeUnit();
+  } if (option == "Promodo") {
+    playPomodo()
+  }
+  if (option == "Quit") {
+    process.exit(0);
+  }
+}
+
+async function playPomodo() {
+  console.log("Work time! 25 minutes");
+  await delay(25 * 60 * 1000); // 25 minutes
+
+  console.log("Work done! Break time 💤 5 minutes");
+  await delay(5 * 60 * 1000); // 5 minutes
+
+  console.log("Break over! Back to work");
+}
 async function selectTimeUnit() {
   const { unit } = await inquirer.prompt({
     name: "unit",
@@ -90,4 +120,4 @@ function startTimer(value: number, unit: string) {
 // Run app
 // ─────────────────────────────
 changeSound();
-selectTimeUnit();
+selectOption();
