@@ -5,7 +5,7 @@ import chalk from "chalk";
 import { Player } from "cli-sound";
 import path from "path";
 import { fileURLToPath } from "url";
-import { isPropertyAccessChain } from "typescript";
+import { todoApp } from "./todo";
 
 // ─────────────────────────────
 // ESM dirname fix
@@ -17,10 +17,9 @@ const __dirname = path.dirname(__filename);
 // Config
 // ─────────────────────────────
 const TIME_OPTIONS: string[] = ["Seconds", "Minutes", "Hours"];
-const MODES_OPTIONS: string[] = ["Normal", "Promodo", "Quit"];
+const MODES_OPTIONS: string[] = ["Normal", "Promodo", "Todo App", "Quit"];
 const args = process.argv.slice(2);
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // ─────────────────────────────
 // Sound setup
@@ -51,14 +50,18 @@ function playSound() {
 async function selectOption() {
   const { option } = await inquirer.prompt({
     name: "option",
-    type: "list",
+    type: "select",
     message: "Choose one of the modes",
     choices: MODES_OPTIONS,
   });
   if (option == "Normal") {
     selectTimeUnit();
-  } if (option == "Promodo") {
-    playPomodo()
+  }
+  if (option == "Promodo") {
+    playPomodo();
+  }
+  if (option == "Todo App"){
+    await todoApp();
   }
   if (option == "Quit") {
     process.exit(0);
@@ -77,7 +80,7 @@ async function playPomodo() {
 async function selectTimeUnit() {
   const { unit } = await inquirer.prompt({
     name: "unit",
-    type: "list",
+    type: "select",
     message: "Choose time unit:",
     choices: TIME_OPTIONS,
   });
@@ -107,7 +110,7 @@ function startTimer(value: number, unit: string) {
 
   const spinner = createSpinner("Starting timer...").start();
   spinner.success({
-    text: chalk.green(`Studying for ${value} ${unit}`)
+    text: chalk.green(`Studying for ${value} ${unit}`),
   });
 
   setTimeout(() => {
